@@ -1,5 +1,5 @@
 // Load the data
-const socialMedia = d3.csv("data/socialMedia.csv");
+const socialMedia = d3.csv("socialMedia.csv");
 
 // Once the data is loaded, proceed with plotting
 socialMedia.then(function(data) {
@@ -118,7 +118,7 @@ socialMedia.then(function(data) {
 
 
 // This data should contains three columns, platform, post type and average number of likes. 
-const socialMediaAvg = d3.csv("data/socialMediaAvg.csv");
+const socialMediaAvg = d3.csv("SocialMediaAvg.csv");
 
 socialMediaAvg.then(function(data) {
     // Convert string values to numbers
@@ -245,7 +245,7 @@ socialMediaAvg.then(function(data) {
 
 // This data should contains two columns, date (3/1-3/7) and average number of likes. 
 
-const socialMediaTime = d3.csv("data/socialMediaTime.csv");
+const socialMediaTime = d3.csv("SocialMediaTime.csv");
 
 socialMediaTime.then(function(data) {
     // Convert string values to numbers
