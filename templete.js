@@ -234,7 +234,7 @@ socialMediaAvg.then(function(data) {
 
 });
 
-const socialMediaTime = d3.csv("data/SocialMediaTime.csv");
+const socialMediaTime = d3.csv("SocialMediaTime.csv");
 
 socialMediaTime.then(function(data) {
     // Convert string values to numbers
@@ -246,7 +246,6 @@ socialMediaTime.then(function(data) {
     const margin = { top: 20, right: 30, bottom: 40, left: 40 };
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
-
 
     // Create the SVG container
     const svg = d3.select("body").append("svg")
@@ -293,8 +292,6 @@ socialMediaTime.then(function(data) {
         .attr("transform", "translate(" + (width / 2) + "," + (height + margin.bottom - 10) + ")")
         .style("text-anchor", "middle")
         .text("Date");
-
-
     
 
     // Add y-axis label
@@ -304,7 +301,6 @@ socialMediaTime.then(function(data) {
         .attr("x", 0 - (height / 2))
         .style("text-anchor", "middle")
         .text("Average Number of Likes");
-
 
     // Draw the line and path. Remember to use curveNatural. 
     const line = d3.line()
