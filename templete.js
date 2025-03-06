@@ -279,16 +279,17 @@ socialMediaTime.then(function(data) {
 
     // Draw the axis, you can rotate the text in the x-axis here
     svg.append("g")
-        .selectAll(".x-axis")
-        .data(data)
-        .enter()
-      .append("text")
-        .attr("x", (d, i) => x(d.Date) + x.bandwidth() / 2)
-        .attr("y", height + 30)
-        .attr("text-anchor", "middle")
-        .text(d => d.Date)
-        .attr("transform", "rotate(-45)")  // Rotate the text for readability
-        .style("font-size", "12px");
+    .selectAll(".x-axis")
+    .data(data)
+    .enter()
+    .append("text")
+    .attr("x", (d, i) => x(d.Date) + x.bandwidth() / 2)  // X position (middle of the band for each date)
+    .attr("y", height + 30)  // Keep labels below the chart
+    .attr("text-anchor", "middle")
+    .text(d => d.Date)
+    .attr("transform", "rotate(-45)")  // Rotate the text for readability
+    .style("font-size", "12px")
+    .style("dominant-baseline", "middle");
 
     svg.append("g")
         .selectAll(".y-axis")
