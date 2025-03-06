@@ -260,62 +260,46 @@ socialMediaTime.then(function(data) {
 
 
     // Create the SVG container
-    const svg = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-    // Set up scales for x and y axes  
     const x = d3.scaleBand()
-        .domain(data.map(d => d.Date))
-        .range([0, width])
-        .padding(0.1);
+    .domain(data.map(d => d.Date))  // Use the Date as the domain
+    .range([0, width])
+    .padding(0.1); // Optional: Adjust the padding between bars if necessary
 
-    const y = d3.scaleLinear()
-      .domain([0, d3.max(data, d => d.AvgLikes)])
-      .nice()
-      .range([height, 0]);
+const y = d3.scaleLinear()
+    .domain([0, d3.max(data, d => d.AvgLikes)]) // Max value of AvgLikes for the y-axis
+    .nice() // Rounds the scale for a more user-friendly value
+    .range([height, 0]);
 
-    // Draw the axis, you can rotate the text in the x-axis here
-    svg.append("g")
-    .selectAll(".x-axis")
-    .data(data)
-    .enter()
-    .append("text")
-    .attr("x", (d, i) => x(d.Date) + x.bandwidth() / 2)  // X position (middle of the band for each date)
-    .attr("y", height + 30)  // Keep labels below the chart
-    .attr("text-anchor", "middle")
-    .text(d => d.Date)
-    .attr("transform", "rotate(-45)")  // Rotate the text for readability
+// Append the x-axis to the SVG
+svg.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", "translate(0," + height + ")")  // Move the x-axis to the bottom
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "middle")
+    .attr("transform", "rotate(-45)")  // Rotate the text for better visibility
     .style("font-size", "12px")
-    .style("dominant-baseline", "middle");
+    .style("dominant-baseline", "middle");  // Prevent overlap of labels
 
-    svg.append("g")
-        .selectAll(".y-axis")
-        .data([0])
-        .enter()
-      .append("g")
-        .call(d3.axisLeft(y))
-        .attr("class", "y-axis")
-        .attr("transform", "translate(0, 0)");
+// Add y-axis label
+svg.append("g")
+    .attr("class", "y-axis")
+    .call(d3.axisLeft(y))
+    .attr("transform", "translate(0, 0)");
 
-    // Add x-axis label
-    svg.append("text")
-        .attr("transform", "translate(" + (width / 2) + "," + (height + margin.bottom - 10) + ")")
-        .style("text-anchor", "middle")
-        .text("Date");
+// Add x-axis label (optional)
+svg.append("text")
+    .attr("transform", "translate(" + (width / 2) + "," + (height + margin.bottom) + ")")
+    .style("text-anchor", "middle")
+    .text("Date");
 
-
-    
-
-    // Add y-axis label
-    svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 0 - margin.left + 10)
-        .attr("x", 0 - (height / 2))
-        .style("text-anchor", "middle")
-        .text("Average Number of Likes");
+// Add y-axis label (optional)
+svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x", 0 - (height / 2))
+    .style("text-anchor", "middle")
+    .text("Average Number of Likes");
 
 
     // Draw the line and path. Remember to use curveNatural. 
