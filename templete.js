@@ -6,9 +6,11 @@ socialMedia.then(function(data) {
     // Log the data to ensure it's loaded properly
     console.log(data);
 
-    // Convert string values to numbers
+    // Convert Likes to numbers, and handle potential issues (like missing or non-numeric values)
     data.forEach(function(d) {
         d.Likes = +d.Likes;
+        // Handle cases where Likes is not a number (set to 0 or some default value)
+        if (isNaN(d.Likes)) d.Likes = 0; 
     });
 
     // Define the dimensions and margins for the SVG
