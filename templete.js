@@ -18,12 +18,19 @@ socialMedia.then(function(data) {
     const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    // Create the SVG container
-    const svg = d3.select("body").append("svg")
+
+    const svg = d3.select("#boxplot").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    
+    // Create the SVG container
+    //const svg = d3.select("body").append("svg")
+   // .attr("width", width + margin.left + margin.right)
+   // .attr("height", height + margin.top + margin.bottom)
+    //.append("g")
+    //.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
     // Set up scales for x and y axes
     const x = d3.scaleBand()
@@ -225,12 +232,19 @@ socialMediaAvg.then(function(data) {
 
     // Alread have the text information for the legend. 
     // Now add a small square/rect bar next to the text with different color.
-      legend.append("text")
-          .attr("x", 20)
-          .attr("y", i * 20 + 12)
-          .text(type)
-          .attr("alignment-baseline", "middle");
-  });
+    legend.append("rect")
+        .attr("x", 0)
+        .attr("y", i * 20)
+        .attr("width", 15)
+        .attr("height", 15)
+        .attr("fill", color(type));
+
+    legend.append("text")
+        .attr("x", 20)
+        .attr("y", i * 20 + 12)
+        .text(type)
+        .attr("alignment-baseline", "middle");
+    });
 
 });
 
