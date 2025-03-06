@@ -199,11 +199,11 @@ socialMediaAvg.then(function(data) {
         .text("Platform");
 
     svg.append("text")
-        .attr("x", -margin.left + 10)
-        .attr("y", height / 2)
-        .attr("text-anchor", "middle")
         .attr("transform", "rotate(-90)")
-        .text("Average Likes");
+        .attr("y", 0 - margin.left + 10)
+        .attr("x", 0 - (height / 2))
+        .style("text-anchor", "middle")
+        .text("Average Number of Likes");
 
 
   // Group container for bars
