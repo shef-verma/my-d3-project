@@ -20,41 +20,31 @@ socialMedia.then(function(data) {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    
-
     // Set up scales for x and y axes
-    // You can use the range 0 to 1000 for the number of Likes, or if you want, you can use
-    // d3.min(data, d => d.Likes) to achieve the min value and 
-    // d3.max(data, d => d.Likes) to achieve the max value
-    // For the domain of the xscale, you can list all four platforms or use
-    // [...new Set(data.map(d => d.Platform))] to achieve a unique list of the platform
-    
-
-    // Add scales
     const x = d3.scaleBand()
     .domain([...new Set(data.map(d => d.Platform))]) // Unique platforms
     .range([0, width])
     .padding(0.1);
-    
+
     const y = d3.scaleLinear()
     .domain([0, d3.max(data, d => d.Likes)]) // Max Likes value
     .nice() // Makes the scale have a nice round domain
     .range([height, 0]);
 
+    // Append x-axis to the SVG
     svg.append("g")
     .attr("transform", "translate(0," + height + ")")
     .call(d3.axisBottom(x));
 
+    // Append y-axis to the SVG
     svg.append("g")
     .call(d3.axisLeft(y));
-
 
     // Add x-axis label
     svg.append("text")
     .attr("transform", "translate(" + (width / 2) + "," + (height + margin.bottom) + ")")
     .style("text-anchor", "middle")
     .text("Platform");
-    
 
     // Add y-axis label
     svg.append("text")
@@ -63,7 +53,6 @@ socialMedia.then(function(data) {
     .attr("x", 0 - (height / 2))
     .style("text-anchor", "middle")
     .text("Likes");
-  
 
     const rollupFunction = function(groupData) {
         const values = groupData.map(d => d.Likes).sort(d3.ascending);
@@ -78,37 +67,35 @@ socialMedia.then(function(data) {
     // Group data by group and use the rollupFunction to calculate the quartiles (min, q1, median, q3, max) for each group
     const quantilesByGroups = d3.rollup(data, rollupFunction, d => d.Platform);
 
-    // go over each group and its calculated quartiles, set x position of the boxplot for each species based on the xScale, 
-// and calculate width of each box using bandwidth of the xScale
+    // go over each group and its calculated quartiles, set x position of the boxplot for each platform based on the xScale, 
+    // and calculate width of each box using bandwidth of the xScale
     quantilesByGroups.forEach((quantiles, Platform) => {
-        const x = xScale(Platform);
-        const boxWidth = xScale.bandwidth();
-        const IQR = quartiles.q3 - quartiles.q1;
+        const xPos = x(Platform); // Get the x position using xScale
+        const boxWidth = x.bandwidth(); // Get the width of the box (based on the scale)
 
-
-        // Draw vertical lines
+        // Draw vertical lines for min and max values
         svg.append("line")
-        .attr("x1", x + boxWidth / 2)
-        .attr("x2", x + boxWidth / 2)
-        .attr("y1", yScale(quantiles.min))
-        .attr("y2", yScale(quantiles.max))
+        .attr("x1", xPos + boxWidth / 2)
+        .attr("x2", xPos + boxWidth / 2)
+        .attr("y1", y(quantiles.min))
+        .attr("y2", y(quantiles.max))
         .attr("stroke", "black")
         .attr("stroke-width", 1);
 
-        // Draw box
+        // Draw the box (IQR)
         svg.append("rect")
-        .attr("x", x)
-        .attr("y", yScale(quantiles.q3))
+        .attr("x", xPos)
+        .attr("y", y(quantiles.q3))
         .attr("width", boxWidth)
-        .attr("height", yScale(quantiles.q1) - yScale(quantiles.q3))
+        .attr("height", y(quantiles.q1) - y(quantiles.q3))
         .attr("fill", "lightgray");
 
-        // Draw median line
+        // Draw the median line
         svg.append("line")
-        .attr("x1", x)
-        .attr("x2", x + boxWidth)
-        .attr("y1", yScale(quantiles.median))
-        .attr("y2", yScale(quantiles.median))
+        .attr("x1", xPos)
+        .attr("x2", xPos + boxWidth)
+        .attr("y1", y(quantiles.median))
+        .attr("y2", y(quantiles.median))
         .attr("stroke", "black")
         .attr("stroke-width", 2);
     });
