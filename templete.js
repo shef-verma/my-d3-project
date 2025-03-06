@@ -285,12 +285,13 @@ socialMediaTime.then(function(data) {
 
     // Draw the axes
     svg.append("g")
-        .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x))
-        .selectAll("text") // Select all x-axis labels
-        .attr("transform", "rotate(-45)") // Rotate labels by -45 degrees
-        .style("text-anchor", "end") // Adjust text anchor for better alignment
-        .style("font-size", "12px"); // Optionally reduce font size
+    .attr("class", "x-axis")
+    .attr("transform", "translate(0," + height + ")")  // Move x-axis to bottom
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "middle")  // Center-align the text
+    .attr("transform", "rotate(0)")  // Set the rotation to 0 (horizontal)
+    .style("font-size", "12px");
 
     // Draw the y-axis
     svg.append("g")
