@@ -3,6 +3,9 @@ const socialMedia = d3.csv("socialMedia.csv");
 
 // Once the data is loaded, proceed with plotting
 socialMedia.then(function(data) {
+    // Log the data to ensure it's loaded properly
+    console.log(data);
+
     // Convert string values to numbers
     data.forEach(function(d) {
         d.Likes = +d.Likes;
@@ -64,11 +67,13 @@ socialMedia.then(function(data) {
         return {min, q1, median, q3, max};
     };
 
-    // Group data by group and use the rollupFunction to calculate the quartiles (min, q1, median, q3, max) for each group
+    // Group data by platform and calculate quartiles (min, q1, median, q3, max)
     const quantilesByGroups = d3.rollup(data, rollupFunction, d => d.Platform);
 
-    // go over each group and its calculated quartiles, set x position of the boxplot for each platform based on the xScale, 
-    // and calculate width of each box using bandwidth of the xScale
+    // Log the quantiles for debugging
+    console.log(quantilesByGroups);
+
+    // Go over each group and draw the box plot
     quantilesByGroups.forEach((quantiles, Platform) => {
         const xPos = x(Platform); // Get the x position using xScale
         const boxWidth = x.bandwidth(); // Get the width of the box (based on the scale)
