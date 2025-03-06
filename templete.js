@@ -286,8 +286,13 @@ socialMediaTime.then(function(data) {
     // Draw the axes
     svg.append("g")
         .attr("transform", "translate(0," + height + ")")
-        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .selectAll("text") // Select all x-axis labels
+        .attr("transform", "rotate(-45)") // Rotate labels by -45 degrees
+        .style("text-anchor", "end") // Adjust text anchor for better alignment
+        .style("font-size", "12px"); // Optionally reduce font size
 
+    // Draw the y-axis
     svg.append("g")
         .call(d3.axisLeft(y));
 
@@ -296,7 +301,6 @@ socialMediaTime.then(function(data) {
         .attr("transform", "translate(" + (width / 2) + "," + (height + margin.bottom - 10) + ")")
         .style("text-anchor", "middle")
         .text("Date");
-
     // Add y-axis label
     svg.append("text")
         .attr("transform", "rotate(-90)")
