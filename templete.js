@@ -24,7 +24,7 @@ socialMedia.then(function(data) {
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
+
     // Create the SVG container
     //const svg = d3.select("body").append("svg")
    // .attr("width", width + margin.left + margin.right)
@@ -150,7 +150,7 @@ socialMediaAvg.then(function(data) {
         .domain(data.map(d => d.Platform))
         .rangeRound([0, width])
         .padding(0.1);
-      
+
 
     const x1 = d3.scaleBand()
       .domain(['Image', 'Link', 'Video']) // Three post types
@@ -165,7 +165,7 @@ socialMediaAvg.then(function(data) {
     const color = d3.scaleOrdinal()
       .domain([...new Set(data.map(d => d.PostType))])
       .range(["#1f77b4", "#ff7f0e", "#2ca02c"]);    
-         
+
     // Add scales x0 and y     
     svg.append("g")
         .selectAll("g")
@@ -220,14 +220,14 @@ socialMediaAvg.then(function(data) {
         .attr("width", x1.bandwidth())
         .attr("height", d => height - y(d.AvgLikes))
         .attr("fill", d => color(d.PostType));
-      
+
 
     // Add the legend
     const legend = svg.append("g")
       .attr("transform", `translate(${width - 150}, ${margin.top})`);
 
     const types = [...new Set(data.map(d => d.PostType))];
- 
+
     types.forEach((type, i) => {
 
     // Alread have the text information for the legend. 
@@ -285,13 +285,13 @@ socialMediaTime.then(function(data) {
 
     // Draw the axes
     svg.append("g")
-    .attr("class", "x-axis")
-    .attr("transform", "translate(0," + height + ")")  // Move x-axis to bottom
-    .call(d3.axisBottom(x))
-    .selectAll("text")
-    .style("text-anchor", "middle")  // Center-align the text
-    .attr("transform", "rotate(0)")  // Set the rotation to 0 (horizontal)
-    .style("font-size", "12px");
+        .attr("transform", "translate(0," + height + ")")
+        .call(d3.axisBottom(x));
+        .call(d3.axisBottom(x))
+        .selectAll("text") // Select all x-axis labels
+        .attr("transform", "rotate(-45)") // Rotate labels by -45 degrees
+        .style("text-anchor", "end") // Adjust text anchor for better alignment
+        .style("font-size", "12px"); // Optionally reduce font size
 
     // Draw the y-axis
     svg.append("g")
@@ -302,6 +302,7 @@ socialMediaTime.then(function(data) {
         .attr("transform", "translate(" + (width / 2) + "," + (height + margin.bottom - 10) + ")")
         .style("text-anchor", "middle")
         .text("Date");
+
     // Add y-axis label
     svg.append("text")
         .attr("transform", "rotate(-90)")
@@ -328,4 +329,3 @@ socialMediaTime.then(function(data) {
 
 
 });
-
